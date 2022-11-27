@@ -1,9 +1,108 @@
 ﻿@page "/"
+@using AstronautRegister.Shared
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Astronaut register</PageTitle>
 
-<h1>Hello, world!</h1>
+<!-- Create table of astronauts with boostrap  -->
+<!-- Table will contain 3 columns: Name, Surname, Date of birth, Superpower -->
+<!-- Use bootstrap to create table with 4 columns -->
+<!-- Make it pretty with bootstrap -->
+<!-- 5 column will be for delete button -->
 
-Welcome to your new app.
+<Table class="table">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Date of birth</th>
+        <th>Superpower</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var astronaut in _astronauts)
+    {
+        <tr>
+            <td>@astronaut.Name</td>
+            <td>@astronaut.Surname</td>
+            <td>@astronaut.DateOfBirth.ToString("dd/MM/yyyy")</td>
+            <td>@astronaut.Superpower</td>
+            <td>
+                <button class="btn btn-danger">Delete</button>
+            </td>
+        </tr>
+    }
+    </tbody>
+</Table>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<!-- Add a form to add new astronaut -->
+<!-- Use bootstrap to make it pretty -->
+<!-- Add some validation to the form -->
+<!-- Use bootstrap to make the form look good -->
+
+<EditForm Model="Astronaut" OnValidSubmit="AddAstronaut">
+    <DataAnnotationsValidator/>
+    <div class="form-group">
+        <label for="name">Name</label>
+        <InputText class="form-control" @bind-Value="Astronaut.Name"/>
+        <ValidationMessage For="() => Astronaut.Name"/>
+    </div>
+    <div class="form-group">
+        <label for="surname">Surname</label>
+        <InputText class="form-control" @bind-Value="Astronaut.Surname"/>
+        <ValidationMessage For="() => Astronaut.Surname"/>
+
+    </div>
+
+    <div class="form-group">
+        <label for="dateOfBirth">Date of birth</label>
+        <InputDate class="form-control" @bind-Value="Astronaut.DateOfBirth"/>
+        <ValidationMessage For="() => Astronaut.DateOfBirth"/>
+    </div>
+
+    <div class="form-group">
+        <label for="superpower">Superpower</label>
+        <InputText class="form-control" @bind-Value="Astronaut.Superpower"/>
+        <ValidationMessage For="() => Astronaut.Superpower"/>
+    </div>
+
+    <button class="btn btn-primary">Add</button>
+
+</EditForm>
+
+
+@code{
+
+    private Astronaut Astronaut { get; set; } = new();
+    
+    private readonly List<Astronaut> _astronauts = new()
+    {
+        new Astronaut
+        {
+            Name = "Neil",
+            Surname = "Armstrong",
+            DateOfBirth = new DateTime(1930, 8, 5),
+            Superpower = "Walking on the moon"
+        },
+        new Astronaut
+        {
+            Name = "Buzz",
+            Surname = "Aldrin",
+            DateOfBirth = new DateTime(1930, 1, 20),
+            Superpower = "Walking on the moon"
+        },
+        new Astronaut
+        {
+            Name = "Michael",
+            Surname = "Collins",
+            DateOfBirth = new DateTime(1930, 7, 31),
+            Superpower = "Walking on the moon"
+        }
+    };
+
+    private void AddAstronaut()
+    {
+        _astronauts.Add(Astronaut);
+    }
+
+}
