@@ -1,11 +1,12 @@
-using Microsoft.AspNetCore.ResponseCompression;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+Infrastructure.DiConfig.ConfigureServices(builder.Services, builder.Configuration);
+Core.DiConfig.ConfigureServices(builder.Services);
 
 var app = builder.Build();
 

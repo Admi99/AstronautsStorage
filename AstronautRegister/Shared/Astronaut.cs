@@ -2,6 +2,8 @@
 
 public record Astronaut
 {
+    public int Id { get; init; }
+    
     public string Name { get; set; } = string.Empty;
     
     public string Surname { get; set; } = string.Empty;

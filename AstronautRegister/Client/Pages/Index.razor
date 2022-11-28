@@ -1,6 +1,8 @@
 ﻿@page "/"
 @using AstronautRegister.Shared
 
+@inject HttpClient Http
+
 <PageTitle>Astronaut register</PageTitle>
 
 <!-- Create table of astronauts with boostrap  -->
@@ -28,7 +30,7 @@
             <td>@astronaut.DateOfBirth.ToString("dd/MM/yyyy")</td>
             <td>@astronaut.Superpower</td>
             <td>
-                <button class="btn btn-danger">Delete</button>
+                <button class="btn btn-danger" @onclick="@(() => DeleteAstronaut(astronaut))">Delete</button>
             </td>
         </tr>
     }
@@ -65,44 +67,45 @@
         <InputText class="form-control" @bind-Value="Astronaut.Superpower"/>
         <ValidationMessage For="() => Astronaut.Superpower"/>
     </div>
-
-    <button class="btn btn-primary">Add</button>
+    <!-- Create space between div and button -->
+    <br/>
+    <div class="form-group">
+        <button class="btn btn-primary">Add</button>
+    </div>
 
 </EditForm>
 
 
 @code{
 
-    private Astronaut Astronaut { get; set; } = new();
-    
-    private readonly List<Astronaut> _astronauts = new()
-    {
-        new Astronaut
-        {
-            Name = "Neil",
-            Surname = "Armstrong",
-            DateOfBirth = new DateTime(1930, 8, 5),
-            Superpower = "Walking on the moon"
-        },
-        new Astronaut
-        {
-            Name = "Buzz",
-            Surname = "Aldrin",
-            DateOfBirth = new DateTime(1930, 1, 20),
-            Superpower = "Walking on the moon"
-        },
-        new Astronaut
-        {
-            Name = "Michael",
-            Surname = "Collins",
-            DateOfBirth = new DateTime(1930, 7, 31),
-            Superpower = "Walking on the moon"
-        }
-    };
+    private Astronaut Astronaut { get; set; } = CreateAstronaut();
 
-    private void AddAstronaut()
+    private readonly List<Astronaut> _astronauts = new();
+
+    private async Task AddAstronaut()
     {
         _astronauts.Add(Astronaut);
+        await Http.PostAsJsonAsync("Astronaut", Astronaut);
+        
+        Astronaut = CreateAstronaut();
     }
 
+    protected override async Task OnInitializedAsync()
+    {
+        _astronauts.Clear();
+        var result = await Http.GetFromJsonAsync<IEnumerable<Astronaut>>("Astronaut");
+        _astronauts.AddRange(result ?? Array.Empty<Astronaut>());
+    }
+
+    private static Astronaut CreateAstronaut()
+        => new()
+        {
+            DateOfBirth = DateTimeOffset.Now
+        };
+    
+    private async Task DeleteAstronaut(Astronaut astronaut)
+    {
+        _astronauts.Remove(astronaut);
+        await Http.DeleteAsync($"Astronaut/del/{astronaut.Id}");
+    }
 }
