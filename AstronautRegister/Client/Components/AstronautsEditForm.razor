@@ -1,0 +1,48 @@
+﻿@using AstronautRegister.Shared
+
+<EditForm Model="Astronaut" OnValidSubmit="@OnClick" class="flex-col space-y-3 items-center py-auto rounded">
+    <DataAnnotationsValidator/>
+
+    <div class="flex space-x-5">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <InputText class="form-control" @bind-Value="Astronaut.Name"/>
+            <ValidationMessage For="() => Astronaut.Name"/>
+        </div>
+        <div class="form-group">
+            <label for="surname">Surname</label>
+            <InputText class="form-control" @bind-Value="Astronaut.Surname"/>
+            <ValidationMessage For="() => Astronaut.Surname"/>
+
+        </div>
+    </div>
+
+    <div class="flex space-x-5">
+        <div class="form-group w-52">
+            <label for="dateOfBirth">Date of birth</label>
+            <InputDate class="form-control" @bind-Value="Astronaut.DateOfBirth"/>
+            <ValidationMessage For="() => Astronaut.DateOfBirth"/>
+        </div>
+
+        <div class="form-group w-52 mx-4">
+            <label for="superpower">Superpower</label>
+            <InputText class="form-control" @bind-Value="Astronaut.Superpower"/>
+            <ValidationMessage For="() => Astronaut.Superpower"/>
+        </div>
+    </div>
+
+
+    <button class="text-bold h-10 text-white px-5 rounded bg-green-800 hover:bg-green-600 active:bg-green-400">Add</button>
+
+</EditForm>
+
+
+@code {
+
+    [Parameter, EditorRequired]
+    public Astronaut Astronaut { get; set; } = new();
+
+    [Parameter, EditorRequired]
+    public Func<Task> OnClick { get; set; } = default!;
+
+}

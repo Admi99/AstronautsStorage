@@ -1,79 +1,15 @@
 ﻿@page "/"
 @using AstronautRegister.Shared
+@using AstronautRegister.Client.Components
 
 @inject HttpClient Http
 
 <PageTitle>Astronaut register</PageTitle>
 
-<!-- Create table of astronauts with boostrap  -->
-<!-- Table will contain 3 columns: Name, Surname, Date of birth, Superpower -->
-<!-- Use bootstrap to create table with 4 columns -->
-<!-- Make it pretty with bootstrap -->
-<!-- 5 column will be for delete button -->
-
-<Table class="table">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Surname</th>
-        <th>Date of birth</th>
-        <th>Superpower</th>
-        <th>Delete</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var astronaut in _astronauts)
-    {
-        <tr>
-            <td>@astronaut.Name</td>
-            <td>@astronaut.Surname</td>
-            <td>@astronaut.DateOfBirth.ToString("dd/MM/yyyy")</td>
-            <td>@astronaut.Superpower</td>
-            <td>
-                <button class="btn btn-danger" @onclick="@(() => DeleteAstronaut(astronaut))">Delete</button>
-            </td>
-        </tr>
-    }
-    </tbody>
-</Table>
-
-<!-- Add a form to add new astronaut -->
-<!-- Use bootstrap to make it pretty -->
-<!-- Add some validation to the form -->
-<!-- Use bootstrap to make the form look good -->
-
-<EditForm Model="Astronaut" OnValidSubmit="AddAstronaut">
-    <DataAnnotationsValidator/>
-    <div class="form-group">
-        <label for="name">Name</label>
-        <InputText class="form-control" @bind-Value="Astronaut.Name"/>
-        <ValidationMessage For="() => Astronaut.Name"/>
-    </div>
-    <div class="form-group">
-        <label for="surname">Surname</label>
-        <InputText class="form-control" @bind-Value="Astronaut.Surname"/>
-        <ValidationMessage For="() => Astronaut.Surname"/>
-
-    </div>
-
-    <div class="form-group">
-        <label for="dateOfBirth">Date of birth</label>
-        <InputDate class="form-control" @bind-Value="Astronaut.DateOfBirth"/>
-        <ValidationMessage For="() => Astronaut.DateOfBirth"/>
-    </div>
-
-    <div class="form-group">
-        <label for="superpower">Superpower</label>
-        <InputText class="form-control" @bind-Value="Astronaut.Superpower"/>
-        <ValidationMessage For="() => Astronaut.Superpower"/>
-    </div>
-    <!-- Create space between div and button -->
-    <br/>
-    <div class="form-group">
-        <button class="btn btn-primary">Add</button>
-    </div>
-
-</EditForm>
+<Page>
+    <AstronautsEditForm Astronaut="@Astronaut" OnClick="@AddAstronaut"/>
+    <AstronautsTable Astronauts="@_astronauts" OnClick="@DeleteAstronaut"/>
+</Page>
 
 
 @code{
@@ -86,7 +22,7 @@
     {
         _astronauts.Add(Astronaut);
         await Http.PostAsJsonAsync("Astronaut", Astronaut);
-        
+
         Astronaut = CreateAstronaut();
     }
 
@@ -102,7 +38,7 @@
         {
             DateOfBirth = DateTimeOffset.Now
         };
-    
+
     private async Task DeleteAstronaut(Astronaut astronaut)
     {
         _astronauts.Remove(astronaut);
