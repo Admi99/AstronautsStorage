@@ -6,22 +6,21 @@
 
 <PageTitle>Astronaut register</PageTitle>
 
-<Modal @ref="Modal"></Modal>
+<Modal @ref="Modal" OnDelete="@OnModalConfirmation"></Modal>
 
 <Page>
-    <h1 class="text-xl">Add astronaut</h1>
+    <Header Text="Add astronaut"/>
     <AstronautsEditForm Astronaut="@Astronaut" OnClick="@AddAstronaut"/>
     <AstronautsTable Astronauts="@_astronauts" OnClick="@DeleteAstronaut"/>
-    <button @onclick="() => Modal.Open()">Open Modal</button>
 </Page>
-@* npx tailwindcss -i ./Styles/app.css -o ./wwwroot/app.css --watch *@
+
 @code{
 
     private Astronaut Astronaut { get; set; } = CreateAstronaut();
 
     private readonly List<Astronaut> _astronauts = new();
-    
-    private Modal Modal { get; set; }
+
+    private Modal Modal { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
@@ -38,10 +37,16 @@
 
     private async Task DeleteAstronaut(Astronaut astronaut)
     {
+        Modal.Open(astronaut);
+    }
+
+    private async Task OnModalConfirmation(Astronaut astronaut)
+    {
         _astronauts.Remove(astronaut);
+        StateHasChanged();
         await Http.DeleteAsync($"Astronaut/del/{astronaut.Id}");
     }
-    
+
     private async Task AddAstronaut()
     {
         _astronauts.Add(Astronaut);
