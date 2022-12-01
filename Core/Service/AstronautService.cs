@@ -15,7 +15,7 @@ public class AstronautService : IAstronautService
     public async Task AddAstronautAsync(Astronaut astronaut)
         => await _astronautRepository.AddAsync(astronaut);
 
-    public async Task DeleteAstronautAsync(int id)
+    public async Task DeleteAstronautAsync(Guid id)
         => await _astronautRepository.DeleteAsync(id);
 
     public async Task<IEnumerable<Astronaut>> GetAsync()
@@ -24,6 +24,6 @@ public class AstronautService : IAstronautService
         return astronauts.OrderBy(astronaut => astronaut.LastName);
     }
 
-    public async Task<Astronaut?> GetAsync(int id)
+    public async Task<Astronaut?> GetAsync(Guid id)
         => await _astronautRepository.GetAstronautAsync(id);
 }

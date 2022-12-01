@@ -1,15 +1,14 @@
-﻿
-<div class="alert alert-success h-16 @Visibility" role="alert">
-  @Text
+﻿<div class="alert alert-success h-16 @Visibility" role="alert">
+    @Text
 </div>
 
 @code {
 
     [Parameter]
     public string Text { get; set; } = string.Empty;
-    
+
     [Parameter]
-    public bool IsVisible { get; set; }    
-    
+    public bool IsVisible { get; set; }
+
     private string Visibility => IsVisible ? "visible" : "invisible";
 }

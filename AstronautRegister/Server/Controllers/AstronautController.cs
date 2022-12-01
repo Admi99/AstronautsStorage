@@ -23,7 +23,7 @@ public class AstronautController : ControllerBase
     }
     
     [HttpDelete("del/{id}")]
-    public async Task<IActionResult> DeleteAstronaut([FromRoute] int id)
+    public async Task<IActionResult> DeleteAstronaut([FromRoute] Guid id)
     {
         await _astronautService.DeleteAstronautAsync(id);
         return Ok();
@@ -39,7 +39,7 @@ public class AstronautController : ControllerBase
     }
     
     [HttpGet("get/{id}")]
-    public async Task<IActionResult> Get([FromRoute] int id)
+    public async Task<IActionResult> Get([FromRoute] Guid id)
     {
         var astronaut = await _astronautService.GetAsync(id);
         return astronaut == null ? NotFound() : Ok(astronaut.ToResponse());

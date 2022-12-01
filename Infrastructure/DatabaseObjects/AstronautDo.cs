@@ -1,8 +1,13 @@
-﻿namespace Infrastructure.DatabaseObjects;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Infrastructure.DatabaseObjects;
 
 public class AstronautDo
 {
-    public int Id { get; init; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid Id { get; set; }
     
     public string FirstName { get; init; } = string.Empty;
 

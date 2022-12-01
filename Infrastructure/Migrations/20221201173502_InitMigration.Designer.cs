@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AstronautRegisterDbContext))]
-    [Migration("20221127135647_InitMigration")]
+    [Migration("20221201173502_InitMigration")]
     partial class InitMigration
     {
         /// <inheritdoc />
@@ -27,11 +27,9 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.DatabaseObjects.AstronautDo", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset>("DateOfBirth")
                         .HasColumnType("datetimeoffset");

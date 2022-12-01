@@ -53,6 +53,6 @@
     public IEnumerable<Astronaut> Astronauts { get; set; } = new List<Astronaut>();
 
     [Parameter, EditorRequired]
-    public Func<Astronaut, Task> OnClick { get; set; } = default!;
+    public Action<Astronaut> OnClick { get; set; } = default!;
 
 }

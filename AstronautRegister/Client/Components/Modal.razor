@@ -31,7 +31,7 @@
     [Parameter, EditorRequired]
     public Func<Astronaut, Task> OnDelete { get; set; } = default!;
 
-    private Astronaut _astronaut;
+    private Astronaut _astronaut = new();
 
     public Guid Guid = Guid.NewGuid();
     public string ModalDisplay = "none;";
@@ -50,7 +50,7 @@
     public void Close()
     {
         ModalDisplay = "none";
-        ModalClass = "";
+        ModalClass = string.Empty;
         ShowBackdrop = false;
         StateHasChanged();
     }
@@ -59,7 +59,7 @@
     {
         OnDelete(_astronaut);
         ModalDisplay = "none";
-        ModalClass = "";
+        ModalClass = string.Empty;
         ShowBackdrop = false;
         StateHasChanged();
     }

@@ -22,7 +22,7 @@ public class AstronautRepository : IAstronautRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(Guid id)
     {
         var astronautDo = new AstronautDo { Id = id };
         _dbContext.Astronauts.Attach(astronautDo);
@@ -30,7 +30,7 @@ public class AstronautRepository : IAstronautRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<Astronaut?> GetAstronautAsync(int id)
+    public async Task<Astronaut?> GetAstronautAsync(Guid id)
     {
         var result = await _dbContext.Astronauts.FirstOrDefaultAsync(a => a.Id == id);
         return result?.MapToAstronaut();

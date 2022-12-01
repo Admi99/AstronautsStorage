@@ -9,7 +9,7 @@
 <Modal @ref="Modal" OnDelete="@OnModalConfirmation"></Modal>
 
 <Page>
-    <Title Text="Add astronaut"></Title>
+    <Title Text="Add astronaut" />
     <AstronautsEditForm Astronaut="@Astronaut" OnClick="@AddAstronaut"/>
     <AstronautsTable Astronauts="@_astronauts" OnClick="@DeleteAstronaut"/>
 </Page>
@@ -29,13 +29,7 @@
         _astronauts.AddRange(result ?? Array.Empty<Astronaut>());
     }
 
-    private static Astronaut CreateAstronaut()
-        => new()
-        {
-            DateOfBirth = DateTimeOffset.Now
-        };
-
-    private async Task DeleteAstronaut(Astronaut astronaut)
+    private void DeleteAstronaut(Astronaut astronaut)
     {
         Modal.Open(astronaut);
         StateHasChanged();
@@ -50,9 +44,17 @@
 
     private async Task AddAstronaut()
     {
-        _astronauts.Add(Astronaut);
-        await Http.PostAsJsonAsync("Astronaut", Astronaut);
+        var astronaut = Astronaut with {  Id = Guid.NewGuid()};
+        await Http.PostAsJsonAsync("Astronaut", astronaut);
+        _astronauts.Add(astronaut);
+
         Astronaut = CreateAstronaut();
         StateHasChanged();
     }
+
+    private static Astronaut CreateAstronaut()
+        => new()
+        {
+            DateOfBirth = DateTimeOffset.Now
+        };
 }

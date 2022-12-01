@@ -4,7 +4,7 @@ namespace AstronautRegister.Shared;
 
 public record Astronaut
 {
-    public int Id { get; init; }
+    public Guid Id { get; init; }
     
     [Required]
     [StringLength(49, ErrorMessage = "First name is too long")]
