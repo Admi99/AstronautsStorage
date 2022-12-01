@@ -1,6 +1,6 @@
 ﻿@using AstronautRegister.Shared
 
-<EditForm Model="Astronaut" OnValidSubmit="@OnClick" class="flex-col space-y-3 items-center py-auto rounded">
+<EditForm Model="Astronaut" OnValidSubmit="@OnValidSubmit" class="flex-col space-y-3 items-center py-auto rounded">
     <DataAnnotationsValidator/>
 
     <div class="flex space-x-5">
@@ -28,10 +28,13 @@
         </div>
 
         <button class="text-bold h-9 text-white px-5 rounded bg-green-800 hover:bg-green-600 active:bg-green-400 my-4">Add</button>
+        
+        <div class="mx-16">
+            <Notification Text="Success" IsVisible="@IsSuccessNotificationVisible"/>
+        </div>
     </div>
     
 </EditForm>
-
 
 @code {
 
@@ -40,5 +43,21 @@
 
     [Parameter, EditorRequired]
     public Func<Task> OnClick { get; set; } = default!;
+    
+    private bool IsSuccessNotificationVisible { get; set; }
 
+    private async Task OnValidSubmit()
+    {
+        await OnClick();
+        await ShowNotificationBar();
+    }
+
+    private async Task ShowNotificationBar()
+    {
+        IsSuccessNotificationVisible = true;
+        StateHasChanged();
+        await Task.Delay(2000);
+        IsSuccessNotificationVisible = false;
+        StateHasChanged();
+    }
 }
